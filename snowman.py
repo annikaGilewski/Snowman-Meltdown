@@ -1,36 +1,5 @@
 import random
 
-# Snowman ASCII Art stages
-STAGES = [
-     # Stage 0: Full snowman
-     """
-      ___  
-     /___\\ 
-     (o o) 
-     ( : ) 
-     ( : ) 
-     """,
-     # Stage 1: Bottom part starts melting
-     """
-      ___  
-     /___\\ 
-     (o o) 
-     ( : ) 
-     """,
-     # Stage 2: Only the head remains
-     """
-      ___  
-     /___\\ 
-     (o o) 
-     """,
-     # Stage 3: Snowman completely melted
-     """
-      ___  
-     /___\\ 
-     """
- ]
-
-
 # List of secret words
 WORDS = ["python", "git", "github", "snowman", "meltdown"]
 
@@ -48,14 +17,30 @@ def play_game():
     print("Welcome to Snowman Meltdown!")
 
     while mistakes < len(STAGES) - 1:
+
         display_game_state(mistakes, secret_word, guessed_letters)
 
         guess = input("Guess a letter: ").lower()
+
+        if guess in guessed_letters:
+            print("You already guessed that letter.")
+            continue
 
         guessed_letters.append(guess)
 
         if guess not in secret_word:
             mistakes += 1
+            print("Wrong guess!")
+
+        if all(letter in guessed_letters for letter in secret_word):
+            print("You saved the snowman!")
+            print(f"The word was: {secret_word}")
+            break
+
+    else:
+        display_game_state(mistakes, secret_word, guessed_letters)
+        print("The snowman melted!")
+        print(f"The word was: {secret_word}")
 
 def display_game_state(mistakes, secret_word, guessed_letters):
     print(STAGES[mistakes])
